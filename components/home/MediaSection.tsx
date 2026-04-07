@@ -1,3 +1,5 @@
+import Reveal from "@/components/Reveal";
+
 const articles = [
   {
     source: "Luxury Auto Magazine",
@@ -20,36 +22,38 @@ export default function MediaSection() {
     <section aria-label="Press and media features" className="py-32 bg-surface-mid overflow-hidden">
       <div className="w-full max-w-[1920px] mx-auto px-8">
         <div className="mb-16">
-          <span className="reveal text-accent text-xs font-bold uppercase tracking-[0.4em] mb-4 block font-label">
+          <Reveal className="text-accent text-xs font-bold uppercase tracking-[0.4em] mb-4 block font-label">
             Press &amp; Features
-          </span>
-            <div className="clip-wrap">
-            <h2 className="reveal fluid-h2 font-black text-content-primary tracking-tighter uppercase leading-none font-headline">
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="fluid-h2 font-black text-content-primary tracking-tighter uppercase leading-none font-headline">
               In the Media
             </h2>
-          </div>
+          </Reveal>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
           {articles.map((article, i) => (
-            <article key={article.title} className={`reveal delay-${i + 1} group`}>
-              <div className="card-shine relative aspect-[4/3] overflow-hidden mb-8 shadow-2xl">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={article.src} alt={article.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1500ms]" loading="lazy" />
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.10) 70%, transparent 100%)" }} />
-              </div>
-              <div className="space-y-4">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-accent font-bold font-label">
-                  {article.source}
-                </span>
-                <h3 className="text-2xl md:text-3xl font-bold text-content-primary group-hover:text-accent transition-colors duration-300 font-headline">
-                  {article.title}
-                </h3>
-                <p className="text-content-primary/60 leading-relaxed max-w-lg font-body">
-                  {article.description}
-                </p>
-              </div>
-            </article>
+            <Reveal key={article.title} delay={(i + 1) * 0.08}>
+              <article className="group">
+                <div className="card-shine relative aspect-[4/3] overflow-hidden mb-8 shadow-2xl">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={article.src} alt={article.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1500ms]" loading="lazy" />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.10) 70%, transparent 100%)" }} />
+                </div>
+                <div className="space-y-4">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-accent font-bold font-label">
+                    {article.source}
+                  </span>
+                  <h3 className="text-2xl md:text-3xl font-bold text-content-primary group-hover:text-accent transition-colors duration-300 font-headline">
+                    {article.title}
+                  </h3>
+                  <p className="text-content-primary/60 leading-relaxed max-w-lg font-body">
+                    {article.description}
+                  </p>
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import AnimationProvider from "@/components/AnimationProvider";
+import Reveal from "@/components/Reveal";
 import NewsletterCTA from "@/components/home/NewsletterCTA";
 import VehicleInquiryForm from "@/components/VehicleInquiryForm";
 import { getVehicleById, vehicles } from "@/lib/inventory";
@@ -182,7 +183,8 @@ export default async function VehicleDetailPage({ params }: Props) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-surface-border/20">
             {related.map((r, i) => (
-              <article key={r.id} className={`reveal delay-${i + 1} group bg-surface-base`}>
+              <Reveal key={r.id} delay={(i + 1) * 0.08}>
+              <article className="group bg-surface-base">
                 <Link href={`/collection/${r.id}`} aria-label={`View ${r.subtitle} ${r.title}`} className="block">
               <div className="relative aspect-[16/9] overflow-hidden card-shine">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -209,6 +211,7 @@ export default async function VehicleDetailPage({ params }: Props) {
                   </div>
                 </Link>
               </article>
+              </Reveal>
             ))}
           </div>
         </section>

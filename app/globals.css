@@ -58,40 +58,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── Scroll-reveal ───────────────────────────────────────────────────────── */
-.reveal,
-.reveal-left,
-.reveal-right,
-.reveal-scale {
-  opacity: 0;
-  transition:
-    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal         { transform: translateY(32px); filter: blur(4px); }
-.reveal-left    { transform: translateX(-48px); }
-.reveal-right   { transform: translateX(48px); }
-.reveal-scale   { transform: scale(0.94); }
-
-.reveal.visible,
-.reveal-left.visible,
-.reveal-right.visible,
-.reveal-scale.visible {
-  opacity: 1;
-  transform: none;
-  filter: none;
-}
-
-/* Stagger delays */
-.delay-1 { transition-delay: 80ms; }
-.delay-2 { transition-delay: 160ms; }
-.delay-3 { transition-delay: 240ms; }
-.delay-4 { transition-delay: 320ms; }
-.delay-5 { transition-delay: 400ms; }
-.delay-6 { transition-delay: 480ms; }
-
 /* ─── 3D Card tilt ────────────────────────────────────────────────────────── */
 .card-3d {
   transform-style: preserve-3d;
@@ -109,12 +75,6 @@ body {
 
 /* ─── Magnetic ────────────────────────────────────────────────────────────── */
 .magnetic { transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); will-change: transform; }
-
-/* ─── Clip headline reveal — REMOVED, use .reveal instead ────────────────── */
-/* .clip-wrap and .clip-inner are deprecated. All headings use .reveal */
-.clip-wrap  { display: block; }
-.clip-inner { display: block; }
-.clip-inner.visible { }
 
 /* ─── Ambient glow ────────────────────────────────────────────────────────── */
 @keyframes glow-pulse {
@@ -209,10 +169,6 @@ body {
   animation-play-state: paused;
 }
 
-/* ─── FAQ accordion ───────────────────────────────────────────────────────── */
-.faq-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-.faq-body.open { grid-template-rows: 1fr; }
-.faq-body > div { overflow: hidden; }
 
 /* ─── Fluid Typography ────────────────────────────────────────────────────── */
 .fluid-h2      { font-size: clamp(2rem, 5vw, 3rem); }
@@ -273,12 +229,6 @@ input[type="range"]::-moz-range-thumb {
 
 /* ─── Reduced Motion ──────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .reveal-left, .reveal-right, .reveal-scale {
-    transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-  }
   .card-3d { transition: none !important; }
   .parallax { transform: none !important; }
   .glow-orb { animation: none !important; }

@@ -2,56 +2,6 @@
 
 import { useEffect } from "react";
 
-const SELECTORS = ".reveal, .reveal-left, .reveal-right, .reveal-scale";
-
-export function useScrollReveal() {
-  useEffect(() => {
-    const observe = () => {
-      const els = document.querySelectorAll<HTMLElement>(
-        `${SELECTORS}:not(.visible)`
-      );
-
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-              io.unobserve(entry.target);
-            }
-          });
-        },
-        // Generous margin — triggers well before element reaches viewport edge
-        { rootMargin: "0px 0px -40px 0px", threshold: 0 }
-      );
-
-      els.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        // Already visible on load — reveal immediately
-        if (rect.top < window.innerHeight) {
-          el.classList.add("visible");
-        } else {
-          io.observe(el);
-        }
-      });
-
-      return io;
-    };
-
-    // Run once immediately
-    let io = observe();
-
-    // Re-run after a short delay to catch client-rendered elements
-    const t1 = setTimeout(() => { io.disconnect(); io = observe(); }, 300);
-    const t2 = setTimeout(() => { io.disconnect(); io = observe(); }, 800);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      io.disconnect();
-    };
-  }, []);
-}
-
 export function useCardTilt() {
   useEffect(() => {
     const attach = () => {

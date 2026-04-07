@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
+import Reveal from "@/components/Reveal";
 
 const faqs = [
   { q: "How do I enquire about a vehicle in the collection?", a: "Contact our team directly via the enquiry form or by phone. We respond personally — not through an automated system. Every conversation starts with understanding what you are looking for." },
@@ -16,19 +18,22 @@ export default function FAQSection() {
 
   return (
     <section aria-label="Frequently asked questions" className="relative py-40 bg-surface-subtle overflow-hidden">
-     
 
       <div className="relative z-10 w-full max-w-[1920px] mx-auto px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
 
           <div className="lg:col-span-4">
-            <span className="reveal text-accent text-xs uppercase tracking-[0.3em] mb-6 block font-label">Questions</span>
-            <div className="clip-wrap mb-8">
-              <h2 className="reveal fluid-display font-black text-content-primary tracking-tighter uppercase leading-none font-headline">FAQ</h2>
-            </div>
-            <p className="reveal delay-2 text-content-primary/50 leading-relaxed font-body">
-              Everything you need to know about our collection, leasing, and how to get in touch.
-            </p>
+            <Reveal className="text-accent text-xs uppercase tracking-[0.3em] mb-6 block font-label">
+              Questions
+            </Reveal>
+            <Reveal delay={0.08} className="mb-8">
+              <h2 className="fluid-display font-black text-content-primary tracking-tighter uppercase leading-none font-headline">FAQ</h2>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="text-content-primary/50 leading-relaxed font-body">
+                Everything you need to know about our collection, leasing, and how to get in touch.
+              </p>
+            </Reveal>
           </div>
 
           <div className="lg:col-span-8 flex flex-col">
@@ -44,17 +49,29 @@ export default function FAQSection() {
                     {faq.q}
                   </span>
                   <span className="shrink-0 w-8 h-8 border border-content-primary/20 flex items-center justify-center text-content-primary/60 group-hover:border-accent group-hover:text-accent transition-all duration-300" aria-hidden="true">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={`transition-transform duration-500 ${open === i ? "rotate-45" : ""}`}>
+                    <motion.svg
+                      width="14" height="14" viewBox="0 0 14 14" fill="none"
+                      animate={{ rotate: open === i ? 45 : 0 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    >
                       <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                       <line x1="0" y1="7" x2="14" y2="7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
+                    </motion.svg>
                   </span>
                 </button>
-                <div id={`faq-body-${i}`} className={`faq-body ${open === i ? "open" : ""}`} role="region">
-                  <div>
-                    <p className="text-content-primary/60 leading-relaxed pb-8 max-w-2xl font-body">{faq.a}</p>
-                  </div>
-                </div>
+
+                <motion.div
+                  id={`faq-body-${i}`}
+                  role="region"
+                  initial={false}
+                  animate={{ height: open === i ? "auto" : 0, opacity: open === i ? 1 : 0 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <p className="text-content-primary/60 leading-relaxed pb-8 max-w-2xl font-body">
+                    {faq.a}
+                  </p>
+                </motion.div>
               </div>
             ))}
           </div>

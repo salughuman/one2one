@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { vehicles as allVehicles } from "@/lib/inventory";
 import type { Vehicle } from "@/lib/inventory";
+import Reveal from "@/components/Reveal";
 
 // Pull the three featured vehicles directly from the shared inventory
 const featured = allVehicles.find((v) => v.id === "porsche-911-gt3")!;
@@ -100,36 +101,36 @@ export default function FeaturedInventory() {
         {/* Header */}
         <div className="flex justify-between items-end mb-16">
           <div>
-            <span className="reveal text-accent text-xs uppercase tracking-[0.3em] mb-4 block font-label">
+            <Reveal className="text-accent text-xs uppercase tracking-[0.3em] mb-4 block font-label">
               Currently Available
-            </span>
-            <div className="clip-wrap">
-              <h2 className="reveal fluid-h2 font-black text-content-primary tracking-tight uppercase font-headline">
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h2 className="fluid-h2 font-black text-content-primary tracking-tight uppercase font-headline">
                 Featured Icons
               </h2>
-            </div>
+            </Reveal>
           </div>
-          <div className="hidden md:block reveal">
+          <Reveal className="hidden md:block">
             <Link href="/collection" className="text-xs uppercase tracking-widest border-b border-accent pb-1 text-accent hover:text-accent-dim transition-colors font-label">
               View All Inventory
             </Link>
-          </div>
+          </Reveal>
         </div>
 
         {/* Layout: featured left (tall) + two stacked right */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-surface-border/20">
 
           {/* Featured — tall card */}
-          <div className="reveal">
+          <Reveal>
             <VehicleCard v={featured} tall />
-          </div>
+          </Reveal>
 
           {/* Two smaller cards stacked */}
           <div className="flex flex-col gap-px bg-surface-border/20">
             {rest.map((v, i) => (
-              <div key={v.id} className={`reveal delay-${i + 1}`}>
+              <Reveal key={v.id} delay={(i + 1) * 0.08}>
                 <VehicleCard v={v} />
-              </div>
+              </Reveal>
             ))}
           </div>
 
