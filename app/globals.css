@@ -59,45 +59,38 @@ body {
 }
 
 /* ─── Scroll-reveal ───────────────────────────────────────────────────────── */
-.reveal {
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
   opacity: 0;
-  transform: translateY(40px);
-  filter: blur(6px);
   transition:
     opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
     filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.reveal.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
 
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-60px);
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal         { transform: translateY(32px); filter: blur(4px); }
+.reveal-left    { transform: translateX(-48px); }
+.reveal-right   { transform: translateX(48px); }
+.reveal-scale   { transform: scale(0.94); }
 
-.reveal-right {
-  opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+.reveal.visible,
+.reveal-left.visible,
+.reveal-right.visible,
+.reveal-scale.visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
-.reveal-right.visible { opacity: 1; transform: translateX(0); }
-
-.reveal-scale {
-  opacity: 0;
-  transform: scale(0.92);
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal-scale.visible { opacity: 1; transform: scale(1); }
 
 /* Stagger delays */
-.delay-1 { transition-delay: 100ms; }
-.delay-2 { transition-delay: 200ms; }
-.delay-3 { transition-delay: 300ms; }
-.delay-4 { transition-delay: 400ms; }
-.delay-5 { transition-delay: 500ms; }
-.delay-6 { transition-delay: 600ms; }
+.delay-1 { transition-delay: 80ms; }
+.delay-2 { transition-delay: 160ms; }
+.delay-3 { transition-delay: 240ms; }
+.delay-4 { transition-delay: 320ms; }
+.delay-5 { transition-delay: 400ms; }
+.delay-6 { transition-delay: 480ms; }
 
 /* ─── 3D Card tilt ────────────────────────────────────────────────────────── */
 .card-3d {
@@ -280,13 +273,15 @@ input[type="range"]::-moz-range-thumb {
 
 /* ─── Reduced Motion ──────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .reveal-left, .reveal-right, .reveal-scale,
-  .clip-inner, .card-3d, .parallax, .magnetic,
-  .glow-orb, .marquee-track {
-    animation: none !important;
+  .reveal, .reveal-left, .reveal-right, .reveal-scale {
     transition: none !important;
+    opacity: 1 !important;
     transform: none !important;
     filter: none !important;
-    opacity: 1 !important;
   }
+  .card-3d { transition: none !important; }
+  .parallax { transform: none !important; }
+  .glow-orb { animation: none !important; }
+  .marquee-track { animation: none !important; }
+  .card-shine::before, .card-shine::after { display: none; }
 }

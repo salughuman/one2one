@@ -33,7 +33,7 @@ export default function FAQSection() {
 
           <div className="lg:col-span-8 flex flex-col">
             {faqs.map((faq, i) => (
-              <div key={i} className={`reveal delay-${Math.min(i + 1, 6)} border-b border-content-primary/10`}>
+              <div key={i} className="border-b border-content-primary/10">
                 <button
                   className="w-full flex items-center justify-between py-8 text-left group"
                   onClick={() => setOpen(open === i ? null : i)}
