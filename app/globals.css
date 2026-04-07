@@ -1,26 +1,286 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── Design Tokens → Tailwind v4 @theme ─────────────────────────────────────
+   Every value here maps to design-tokens.json.
+   Use these named classes throughout all components — no arbitrary hex.
+   ─────────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Surface backgrounds */
+  --color-surface-base:    #131313;
+  --color-surface-subtle:  #161616;
+  --color-surface-low:     #1C1B1B;
+  --color-surface-mid:     #181818;
+  --color-surface-high:    #1a1a1a;
+  --color-surface-raised:  #20201F;
+  --color-surface-border:  #353535;
+  --color-surface-deep:    #111111;
+  --color-surface-footer:  #0E0E0E;
+
+  /* Content (text) */
+  --color-content-primary:   #E4DFD0;
+  --color-content-secondary: #CBC6B8;
+  --color-content-muted:     #929090;
+
+  /* Accent */
+  --color-accent:         #FF5724;
+  --color-accent-dim:     #FFB5A0;
+  --color-accent-deep:    #541100;
+  --color-accent-darker:  #3b0900;
+
+  /* Fonts */
+  --font-headline: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-body:     "Manrope", system-ui, sans-serif;
+  --font-label:    "Space Grotesk", system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Border radius reset — 0px everywhere ────────────────────────────────── */
+*, *::before, *::after {
+  border-radius: 0 !important;
+}
+/* Exception: glow orbs must stay circular */
+.glow-orb {
+  border-radius: 50% !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base ────────────────────────────────────────────────────────────────── */
+html {
+  background-color: theme(--color-surface-base);
+  color: theme(--color-content-primary);
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  background-color: theme(--color-surface-base);
+  color: theme(--color-content-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Scroll-reveal ───────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  filter: blur(6px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+/* Stagger delays */
+.delay-1 { transition-delay: 100ms; }
+.delay-2 { transition-delay: 200ms; }
+.delay-3 { transition-delay: 300ms; }
+.delay-4 { transition-delay: 400ms; }
+.delay-5 { transition-delay: 500ms; }
+.delay-6 { transition-delay: 600ms; }
+
+/* ─── 3D Card tilt ────────────────────────────────────────────────────────── */
+.card-3d {
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+  will-change: transform;
+}
+.card-3d:hover {
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,87,36,0.08);
+}
+.card-3d-inner { transform: translateZ(20px); }
+
+/* ─── Parallax ────────────────────────────────────────────────────────────── */
+.parallax { transform: translateY(var(--py, 0px)); will-change: transform; }
+
+/* ─── Magnetic ────────────────────────────────────────────────────────────── */
+.magnetic { transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); will-change: transform; }
+
+/* ─── Clip headline reveal — REMOVED, use .reveal instead ────────────────── */
+/* .clip-wrap and .clip-inner are deprecated. All headings use .reveal */
+.clip-wrap  { display: block; }
+.clip-inner { display: block; }
+.clip-inner.visible { }
+
+/* ─── Ambient glow ────────────────────────────────────────────────────────── */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.06); }
+}
+.glow-orb {
+  animation: glow-pulse 8s ease-in-out infinite;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+/* ─── Card shine sweep ────────────────────────────────────────────────────── */
+/*
+  Two-layer effect:
+  ::before — permanent soft top-edge highlight (always visible, subtle)
+  ::after  — diagonal sweep beam on hover (single pass, slow, wide, diffused)
+*/
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Permanent soft top highlight — gives the image a lit-from-above feel */
+.card-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Sweep beam — wide, soft, slow diagonal pass on hover */
+.card-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 20%,
+    rgba(255, 255, 255, 0.10) 45%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.10) 55%,
+    rgba(255, 255, 255, 0.03) 80%,
+    transparent 100%
+  );
+  transform: skewX(-12deg) translateX(0%);
+  transition: none;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+}
+
+.card-shine:hover::after {
+  opacity: 1;
+  transform: skewX(-12deg) translateX(350%);
+  transition:
+    transform 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.1s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-shine::before,
+  .card-shine::after { display: none; }
+}
+
+/* ─── Marquee ─────────────────────────────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 40s linear infinite;
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ─── FAQ accordion ───────────────────────────────────────────────────────── */
+.faq-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+.faq-body.open { grid-template-rows: 1fr; }
+.faq-body > div { overflow: hidden; }
+
+/* ─── Fluid Typography ────────────────────────────────────────────────────── */
+.fluid-h2      { font-size: clamp(2rem, 5vw, 3rem); }
+.fluid-display { font-size: clamp(3rem, 8vw, 6rem); }
+
+/* ─── No scrollbar ────────────────────────────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Card fade-in (for dynamically filtered grids) ──────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Range input styling ─────────────────────────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 1px;
+  background: rgba(255,255,255,0.12);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #FF5724;
+  margin-top: -6.5px;
+  border: 2px solid #131313;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
+input[type="range"]::-moz-range-track {
+  height: 1px;
+  background: rgba(255,255,255,0.12);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #FF5724;
+  border: 2px solid #131313;
+  cursor: pointer;
+}
+
+/* ─── Reduced Motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-left, .reveal-right, .reveal-scale,
+  .clip-inner, .card-3d, .parallax, .magnetic,
+  .glow-orb, .marquee-track {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
 }
